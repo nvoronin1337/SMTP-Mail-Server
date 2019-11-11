@@ -2,7 +2,8 @@ from aiosmtpd.controller import Controller
 import asyncio
 from aiosmtpd.smtp import SMTP as Server, syntax
 import ssl
-
+import subprocess
+import os
 
 class SMTPServer(Server):
     @syntax('PING [ignored]')
@@ -50,6 +51,8 @@ class SMTPServer(Server):
     
 class MyController(Controller):
     def factory(self):
+        if not os.path.exists('cert.cert') and not os.path.exists('key.key'):
+            subprocess.call("openssl req -x509 -config \"C:\\Program Files (x86)\\openssl\\openssl.cnf\" -newkey rsa:4096 -keyout key.key -out cert.cert -days 365 -nodes -subj '/CN=localhost'",shell=True)
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         context.load_cert_chain('cert.cert', 'key.key')
         return SMTPServer(self.handler, tls_context=context, require_starttls=True)
