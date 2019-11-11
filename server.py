@@ -1,9 +1,11 @@
 from aiosmtpd.controller import Controller
-import asyncio
 from aiosmtpd.smtp import SMTP as Server, syntax
+from aiosmtpd.handlers import Message
+import asyncio
 import ssl
 import subprocess
 import os
+
 
 class SMTPServer(Server):
     @syntax('PING [ignored]')
@@ -32,9 +34,9 @@ class SMTPServer(Server):
         if(arg is None):
             await self.push('501 Syntax: MAIL FROM: <address@example.com>')
         else:
-            if(arg[7:len(arg)-1].endswith('@project.com')):
-                self.envelope.mail_from = arg[7:len(arg)-1]
-                message = '250 OK MAIL FROM: ' + arg[7:len(arg)-1]
+            if(arg[6:len(arg)-1].endswith('@project.com')):
+                self.envelope.mail_from = arg[6:len(arg)-1]
+                message = '250 OK MAIL FROM: ' + arg[6:len(arg)-1]
                 await self.push(message)
             else:
                 await self.push('551 not relaying to that domain')
@@ -44,9 +46,14 @@ class SMTPServer(Server):
         if arg is None:
             await self.push('501 Syntax: RCPT TO: <address@example.com>')
         else:
-            self.envelope.rcpt_tos = arg[5:len(arg)-1]
-            message = '250 OK RCPT TO: ' + arg[5:len(arg)-1]
+            self.envelope.rcpt_tos = arg[4:len(arg)-1]
+            message = '250 OK RCPT TO: ' + arg[4:len(arg)-1]
             await self.push(message)
+
+
+class MessageHandler(Message):
+    def handle_message(self, message):
+        print(message)
 
     
 class MyController(Controller):

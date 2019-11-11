@@ -1,7 +1,5 @@
-from server import (SMTPServer, MyController)
+from server import (SMTPServer, MessageHandler, MyController)
 from smtplib import SMTP as Client
-from aiosmtpd.handlers import Sink
-
 
 def test_HELO(client):
     code, message = client.helo('host1')
@@ -14,6 +12,7 @@ def test_PING(client):
 def test_AUTH(client):
     code, message = client.docmd('AUTH username password')
     assert(str(code) == '253')
+    return True
 
 def test_MAIL(client):
     code, message = client.docmd('MAIL FROM: <example@project.com>')
@@ -27,32 +26,26 @@ def test_DATA(client):
     pass
 
 def test_sendmail(client):
-    client.sendmail('example@project.com', 'example2@project.com','hello there')
+    client.sendmail('<example@project.com>', '<example2@project.com>','hello there')
     print('---------------------------------------------')
 
 def run_tests():
-    controller = MyController(Sink())
+    controller = MyController(MessageHandler())
     controller.start()
 
     client = Client(controller.hostname, controller.port)
     client.starttls()
-    client.set_debuglevel(True)
-
-    test_HELO(client)
-    test_PING(client)
-    test_AUTH(client)
-    test_sendmail(client)
-    print('client 1 end')
 
     client2 = Client(controller.hostname, controller.port)
     client2.starttls()
-    client2.set_debuglevel(True)
+
+    test_HELO(client)
+    if test_AUTH(client):
+        test_sendmail(client)
 
     test_HELO(client2)
-    test_PING(client2)
-    test_AUTH(client2)
-    test_sendmail(client2)
-    print('client 2 end')
+    if test_AUTH(client2):
+        test_sendmail(client2)
 
     controller.stop()
     print('tests successful')
