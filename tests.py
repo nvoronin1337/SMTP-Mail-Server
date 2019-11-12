@@ -1,5 +1,5 @@
-from server import (SMTPServer, MessageHandler, MyController)
-from smtplib import SMTP as Client
+from server import (SMTPServer, SMTPHandler, MyController)
+from client import SMTPClient as Client
 
 def test_HELO(client):
     code, message = client.helo('host1')
@@ -14,38 +14,21 @@ def test_AUTH(client):
     assert(str(code) == '253')
     return True
 
-def test_MAIL(client):
-    code, message = client.docmd('MAIL FROM: <example@project.com>')
-    assert(str(code) == '250')
-
-def test_RCPT(client):
-    code, message = client.docmd('RCPT TO: <example@project.com>')
-    assert(str(code) == '250')
-
 def test_DATA(client):
     pass
 
 def test_sendmail(client):
-    client.sendmail('<example@project.com>', '<example2@project.com>','hello there')
+    client.sendmail(client.user.email, '<example2@project.com>','hello there')
     print('---------------------------------------------')
 
 def run_tests():
-    controller = MyController(MessageHandler())
+    controller = MyController(SMTPHandler())
     controller.start()
 
     client = Client(controller.hostname, controller.port)
-    client.starttls()
-
-    client2 = Client(controller.hostname, controller.port)
-    client2.starttls()
-
+    
     test_HELO(client)
-    if test_AUTH(client):
-        test_sendmail(client)
-
-    test_HELO(client2)
-    if test_AUTH(client2):
-        test_sendmail(client2)
+    test_sendmail(client)
 
     controller.stop()
     print('tests successful')

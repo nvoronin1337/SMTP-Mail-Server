@@ -1,11 +1,10 @@
 from aiosmtpd.controller import Controller
 from aiosmtpd.smtp import SMTP as Server, syntax
-from aiosmtpd.handlers import Message
 import asyncio
 import ssl
 import subprocess
 import os
-
+from database import (Database, User)
 
 class SMTPServer(Server):
     @syntax('PING [ignored]')
@@ -23,37 +22,52 @@ class SMTPServer(Server):
                 await self.push('501 Syntax: AUTH USERNAME PASSWORD [ignored]')
                 return
             else:
-                if credentials[0] == 'username' and credentials[1] == 'password':
-                    self.authenticated = True
-                    await self.push('253 Authentication successful')
+                database = Database('network_project.db')
+                if database.check_credentials(credentials[0], credentials[1]):
+                    await self.push('253 Authentication successful')                    
                 else:
                     await self.push('535 Invalid credentials')
 
-    @syntax('MAIL FROM: <address@project.com>')
-    async def smtp_MAIL(self, arg):
-        if(arg is None):
-            await self.push('501 Syntax: MAIL FROM: <address@example.com>')
-        else:
-            if(arg[6:len(arg)-1].endswith('@project.com')):
-                self.envelope.mail_from = arg[6:len(arg)-1]
-                message = '250 OK MAIL FROM: ' + arg[6:len(arg)-1]
-                await self.push(message)
-            else:
-                await self.push('551 not relaying to that domain')
-                
-    @syntax('RCPT TO: <address@project.com')
-    async def smtp_RCPT(self, arg):
+    @syntax("REG USERNAME PASSWORD [ignored]")
+    async def smtp_REG(self, arg):
         if arg is None:
-            await self.push('501 Syntax: RCPT TO: <address@example.com>')
+            await self.push('501 Syntax: REG USERNAME PASSWORD [ignored]')
+            return
         else:
-            self.envelope.rcpt_tos = arg[4:len(arg)-1]
-            message = '250 OK RCPT TO: ' + arg[4:len(arg)-1]
-            await self.push(message)
+            credentials = arg.split(' ')
+            if len(credentials) is not 2:
+                await self.push('501 Syntax: REG USERNAME PASSWORD [ignored]')
+                return
+            else:
+                database = Database('network_project.db')
+                database.add_account(credentials[0], credentials[1])
+                await self.push('253 Authentication successful')
 
+    # uses custom response code: '255 user_id'
+    @syntax("GETUSER USERNAME PASSWORD")
+    async def smtp_GETUSER(self, arg):
+        if arg is None:
+            await self.push('501 Syntax: GETUSER USERNAME PASSWORD [ignored]')
+            return
+        else:
+            credentials = arg.split(' ')
+            if len(credentials) is not 2:
+                await self.push('501 Syntax: GETUSER USERNAME PASSWORD [ignored]')
+                return
+            else:
+                database = Database('network_project.db')
+                user_id = database.get_user_id(credentials[0], credentials[1])
+                response = '255 ' + str(user_id)
+                await self.push(response)
 
-class MessageHandler(Message):
-    def handle_message(self, message):
-        print(message)
+class SMTPHandler:
+    async def handle_DATA(self, server, session, envelope):
+        print('Message from %s' % envelope.mail_from)
+        print('Message for %s' % envelope.rcpt_tos)
+        print('Message data:\n')
+        print(envelope.content.decode('utf8', errors='replace'))
+        print('End of message')
+        return '250 Message accepted for delivery'
 
     
 class MyController(Controller):
