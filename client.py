@@ -3,14 +3,16 @@ from database import(User)
 import socket
 import sys
 
+# All comments in this file are for presentation purpose only
 
+# MAILClient class represents a client program for 
 class MAILClient(Client):
     def __init__(self, hostname, port): 
         super().__init__(hostname,port)
         self.starttls()
         self.authenticated = False
         self.user = self.sign_user()
-        self.inbox = []
+        self.inbox = ''
 
     def sign_user(self):
         while(not self.authenticated):
@@ -57,6 +59,7 @@ class MAILClient(Client):
 
     # calls web server
     def update_inbox(self):
+        # change web server ip address
         HOST, PORT = 'localhost', 9999
         if(self.authenticated is True):
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as web_client:
@@ -66,20 +69,11 @@ class MAILClient(Client):
                 # send user id
                 web_client.sendall(bytes(str(self.user.id) + '\n', 'utf-8'))
 
+                # send inbox length
                 length = int(str(web_client.recv(1024), 'utf-8'))
-                print('length: ' + str(length))
 
                 # receive emails, save them as inbox
                 self.inbox = str(web_client.recv(length), 'utf-8')
-                print(self.inbox)
         else:
             print('not authenticated')
-
-
-if __name__ == '__main__':
-    HOST, PORT = 'localhost', 8025
-    client = MAILClient(HOST, PORT)
-    client.update_inbox()
     
-    client.sendmail(client.user.email, 'test2@project.com', 'Lisa <3')
-    client.quit()

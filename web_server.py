@@ -14,7 +14,6 @@ class TCPHandler(BaseRequestHandler):
         # get emails from database
         database = Database('network_project.db')
         user_inbox = database.get_emails(user_id[0])
-        print(user_inbox)
 
         # send inbox length
         length = sys.getsizeof(str(user_inbox))

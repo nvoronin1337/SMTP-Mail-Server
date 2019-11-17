@@ -9,6 +9,7 @@ query_create_emails = """create table if not exists emails (id integer PRIMARY k
                                    mail_from text not null,
                                    rcpt_tos text,
                                    message text,
+                                   date_received text,
                                    time_received text,
                                    FOREIGN key (acc_id) REFERENCES ACCOUNTS(id));"""
 
@@ -21,11 +22,12 @@ class User:
 
 
 class Email:
-    def __init__(self, id, mailfrom, rcpttos, data, time_received):
+    def __init__(self, id, mailfrom, rcpttos, data, date_received, time_received):
         self.acc_id = id
         self.mailfrom = mailfrom
         self.rcpt_tos = rcpttos
         self.message = data
+        self.date_received = date_received
         self.time_received = time_received
 
 
@@ -82,11 +84,13 @@ class Database:
     def save_email(self, user_id, envelope):
         with sqlite3.connect(self.name) as db_connection:
             cursor = db_connection.cursor()
-            cursor.execute("INSERT INTO emails(acc_id, mail_from, rcpt_tos, message, time_received) values(?,?,?,?,?)", (user_id, envelope.mail_from, str(envelope.rcpt_tos[0]), envelope.content.decode('utf8', errors='replace'), datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")))
+            print(user_id, envelope.mail_from, str(envelope.rcpt_tos[0]), envelope.content.decode('utf8', errors='replace'), datetime.datetime.now().strftime("%B %d, %Y"), datetime.datetime.now().strftime("%I:%M%p"))
+            cursor.execute("INSERT INTO emails(acc_id, mail_from, rcpt_tos, message, date_received, time_received) values(?,?,?,?,?,?)", (user_id, envelope.mail_from, str(envelope.rcpt_tos[0]), envelope.content.decode('utf8', errors='replace'), datetime.datetime.now().strftime("%B %d"), datetime.datetime.now().strftime("%I:%M%p %Y")))
 
     def get_emails(self, user_id, limit=None):
         with sqlite3.connect(self.name) as db_connection:
             cursor = db_connection.cursor()
-            cursor.execute("SELECT mail_from, message, time_received FROM emails where acc_id = ? order by time_received desc;", [user_id])
+            cursor.execute("SELECT id, mail_from, message, date_received, time_received FROM emails where acc_id = ? order by time_received desc;", [user_id])
             records = cursor.fetchall()
+            print(records)
             return records

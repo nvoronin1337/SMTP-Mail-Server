@@ -66,9 +66,9 @@ class SMTPHandler:
     async def handle_DATA(self, server, session, envelope):
         print('Message from %s' % envelope.mail_from)
         print('Message for %s' % envelope.rcpt_tos)
-        print('Message data:\n')
+        print('Message data:')
         print(envelope.content.decode('utf8', errors='replace'))
-        print('End of message')
+        print('End of message\n')
 
         database = Database('network_project.db')
         user_id = database.get_user_id_server(envelope.rcpt_tos[0])
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     try:
         controller = MyController(SMTPHandler())    
         controller.start()
-        input("Server started. Press Return to quit.")
+        input("Server started. Press Return to quit.\n")
     except KeyboardInterrupt:
         print('stopped')
         controller.stop()
