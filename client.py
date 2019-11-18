@@ -1,11 +1,13 @@
 from smtplib import SMTP as Client
-from database import(User)
+from database import User
 import socket
 import sys
 
-# All comments in this file are for presentation purpose only
+import ssl
+import rsa
 
-# MAILClient class represents a client program for 
+# All comments in this file are for presentation purpose only
+# MAILClient class represents a client program for the server application
 class MAILClient(Client):
     def __init__(self, hostname, port): 
         super().__init__(hostname,port)
@@ -63,6 +65,7 @@ class MAILClient(Client):
         HOST, PORT = 'localhost', 9999
         if(self.authenticated is True):
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as web_client:
+                web_client = ssl.wrap_socket(web_client, 'key.key', 'cert.cert')
                 #connect to web server
                 web_client.connect((HOST,PORT))
                 

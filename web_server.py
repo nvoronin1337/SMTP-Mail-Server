@@ -3,9 +3,24 @@ from database import (Database, User)
 import sys
 import re
 
+# security
+import ssl
+import rsa
+
+class MyTCPServer(TCPServer):
+    def __init__(self, server_address, RequestHandlerClass, cert=None, key=None, bind_and_activate=True):
+        super().__init__(server_address, RequestHandlerClass, bind_and_activate)
+        self.cert = cert
+        self.key = key
+
+    def get_request(self):
+        socket, address = self.socket.accept()
+        ssl_socket = ssl.wrap_socket(socket, self.key, self.cert, server_side=True)
+        return (ssl_socket, address)
+
+
 class TCPHandler(BaseRequestHandler):
-    def handle(self):
-        
+    def handle(self):     
         #recieve user id 
         user_id = re.findall(r'\d+', str(self.request.recv(4).strip()))
         print("{} wrote:".format(self.client_address[0]))
@@ -30,7 +45,7 @@ class TCPHandler(BaseRequestHandler):
 if __name__ == '__main__':
     HOST, PORT = 'localhost', 9999
 
-    with TCPServer((HOST, PORT), TCPHandler) as server:
+    with MyTCPServer((HOST, PORT), TCPHandler, cert='cert.cert', key='key.key') as server:
         # Activate the server; this will keep running until you
         # interrupt the program with Ctrl-C
         print('starting...')
