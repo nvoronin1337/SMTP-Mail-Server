@@ -3,6 +3,7 @@ from smtplib import SMTPException
 from enum import IntEnum
 import ast
 
+
 class MenuChoice(IntEnum):
     INBOX = 1
     NEW_MAIL = 2
@@ -20,7 +21,6 @@ if __name__ == '__main__':
         print('2. New mail.')
         print('3. Quit.')
         choice = MenuChoice(int(input('=>')))
-
         if(choice is MenuChoice.INBOX):
             client.update_inbox()
             print('\nYour inbox:')

@@ -90,7 +90,7 @@ class Database:
     def get_emails(self, user_id, limit=None):
         with sqlite3.connect(self.name) as db_connection:
             cursor = db_connection.cursor()
-            cursor.execute("SELECT id, mail_from, message, date_received, time_received FROM emails where acc_id = ? order by time_received desc;", [user_id])
+            cursor.execute("SELECT id, mail_from, message, date_received, time_received FROM emails where acc_id = ? order by id desc;", [user_id])
             records = cursor.fetchall()
             return records
             

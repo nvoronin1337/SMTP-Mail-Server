@@ -4,7 +4,6 @@ import socket
 import sys
 
 import ssl
-import rsa
 
 # All comments in this file are for presentation purpose only
 # MAILClient class represents a client program for the server application
