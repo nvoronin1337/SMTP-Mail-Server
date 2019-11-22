@@ -93,6 +93,8 @@ if __name__ == '__main__':
     # interrupt the program with Ctrl-C
     try:
         controller = MyController(SMTPHandler())    
+        print(controller.hostname)
+        print(controller.port)
         controller.start()
         input("Server started. Press Return to quit.\n")
     except KeyboardInterrupt:

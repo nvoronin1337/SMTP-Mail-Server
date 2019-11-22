@@ -12,7 +12,7 @@ class MenuChoice(IntEnum):
 
 if __name__ == '__main__':
     # change SMTP server ip address
-    HOST, PORT = 'localhost', 8025
+    HOST, PORT = '::1', 8025
     client = MAILClient(HOST, PORT)
     print('\nWelcome ' + str(client.user.email) + '!' )
     running = True
