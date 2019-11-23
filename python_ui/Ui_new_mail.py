@@ -1,0 +1,90 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file '/home/nikita/Documents/network/project_aiosmtpd/project_aiosmtpd/new_mail.ui'
+#
+# Created by: PyQt5 UI code generator 5.10.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(486, 257)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.formLayout = QtWidgets.QFormLayout(self.centralwidget)
+        self.formLayout.setObjectName("formLayout")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setObjectName("label")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
+        self.toLE = QtWidgets.QLineEdit(self.centralwidget)
+        self.toLE.setObjectName("toLE")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.toLE)
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_2)
+        self.messageTE = QtWidgets.QTextEdit(self.centralwidget)
+        self.messageTE.setObjectName("messageTE")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.messageTE)
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.pushButton_2)
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setObjectName("pushButton")
+        self.formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.pushButton)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 486, 22))
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuAbout = QtWidgets.QMenu(self.menubar)
+        self.menuAbout.setObjectName("menuAbout")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.actionNew_mail = QtWidgets.QAction(MainWindow)
+        self.actionNew_mail.setObjectName("actionNew_mail")
+        self.actionInbox = QtWidgets.QAction(MainWindow)
+        self.actionInbox.setObjectName("actionInbox")
+        self.actionOutbox = QtWidgets.QAction(MainWindow)
+        self.actionOutbox.setObjectName("actionOutbox")
+        self.actionSource_code = QtWidgets.QAction(MainWindow)
+        self.actionSource_code.setObjectName("actionSource_code")
+        self.actionPresentation = QtWidgets.QAction(MainWindow)
+        self.actionPresentation.setObjectName("actionPresentation")
+        self.actionLogout = QtWidgets.QAction(MainWindow)
+        self.actionLogout.setObjectName("actionLogout")
+        self.menuFile.addAction(self.actionNew_mail)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionInbox)
+        self.menuFile.addAction(self.actionOutbox)
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionLogout)
+        self.menuAbout.addAction(self.actionSource_code)
+        self.menuAbout.addAction(self.actionPresentation)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuAbout.menuAction())
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow", "To:"))
+        self.label_2.setText(_translate("MainWindow", "Message:"))
+        self.pushButton_2.setText(_translate("MainWindow", "Cancel"))
+        self.pushButton.setText(_translate("MainWindow", "Send"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuAbout.setTitle(_translate("MainWindow", "About"))
+        self.actionNew_mail.setText(_translate("MainWindow", "New mail"))
+        self.actionInbox.setText(_translate("MainWindow", "Inbox"))
+        self.actionOutbox.setText(_translate("MainWindow", "Outbox"))
+        self.actionSource_code.setText(_translate("MainWindow", "Source code"))
+        self.actionPresentation.setText(_translate("MainWindow", "Presentation"))
+        self.actionLogout.setText(_translate("MainWindow", "Logout"))
+
