@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>531</width>
+    <height>382</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1" colspan="2">
+     <widget class="QLabel" name="windowlogoLabel">
+      <property name="text">
+       <string>Username Outbox</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="2">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Select amount of most recent messages to be shown:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QSpinBox" name="spinBox"/>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="showButton">
+      <property name="text">
+       <string>Show</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="4">
+     <widget class="QTableView" name="tableView"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="quitButton">
+      <property name="text">
+       <string>Quit</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1" colspan="2">
+     <widget class="QPushButton" name="expandButton">
+      <property name="text">
+       <string>Expand</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>531</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_mail"/>
+    <addaction name="separator"/>
+    <addaction name="actionInbox"/>
+    <addaction name="actionOutbox"/>
+    <addaction name="separator"/>
+    <addaction name="actionLogout"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="actionSource_code"/>
+    <addaction name="actionPresentation"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew_mail">
+   <property name="text">
+    <string>New mail</string>
+   </property>
+  </action>
+  <action name="actionInbox">
+   <property name="text">
+    <string>Inbox</string>
+   </property>
+  </action>
+  <action name="actionOutbox">
+   <property name="text">
+    <string>Outbox</string>
+   </property>
+  </action>
+  <action name="actionSource_code">
+   <property name="text">
+    <string>Source code</string>
+   </property>
+  </action>
+  <action name="actionPresentation">
+   <property name="text">
+    <string>Presentation</string>
+   </property>
+  </action>
+  <action name="actionLogout">
+   <property name="text">
+    <string>Logout</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
