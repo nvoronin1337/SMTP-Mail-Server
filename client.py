@@ -8,30 +8,28 @@ import ssl
 # All comments in this file are for presentation purpose only
 # MAILClient class represents a client program for the server application
 class MAILClient(Client):
-    def __init__(self, hostname, port): 
+    def __init__(self, hostname, port, email, password, is_registered): 
         super().__init__(hostname,port)
         self.starttls()
         self.authenticated = False
-        self.user = self.sign_user()
+        self.user = self.sign_user(email, password, is_registered)
         self.inbox = ''
 
-    def sign_user(self):
+    def sign_user(self, email, password, is_registered):
         while(not self.authenticated):
-            email = input('Email: ')
-            password = input('Password: ')
-            if self.login(email,password):
-                self.authenticated = True
-                return self.get_user(email, password)
-            else:
-                is_register = input('Do you want to register with these credentials? y/n: ')
-                if(is_register == 'y' or is_register == 'Y'):
-                    if self.register(email, password) is True:
-                        self.authenticated = True
-                        return self.get_user(email, password)
-                    else:
-                        print('Unexpected error.')
+            if is_registered:
+                if self.login(email,password):
+                    self.authenticated = True
+                    return self.get_user(email, password)
                 else:
-                    print("Can't sign in.")
+                    raise 'Invalid Credentials'
+            else:
+                if self.register(email, password) is True:
+                    self.authenticated = True
+                    return self.get_user(email, password)
+                else:
+                    print('Unexpected error.')
+            
 
     def login(self, email, password):
         auth_command = 'AUTH ' + str(email) + ' ' + str(password)

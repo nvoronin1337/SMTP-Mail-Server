@@ -13,7 +13,10 @@ class MenuChoice(IntEnum):
 if __name__ == '__main__':
     # change SMTP server ip address
     HOST, PORT = '::1', 8025
-    client = MAILClient(HOST, PORT)
+    email = input('Enter Email: ')
+    password = input('Enter Password: ')
+    is_registered = input('Are you already registered for this account? 1/0: ')
+    client = MAILClient(HOST, PORT, email, password, is_registered)
     print('\nWelcome ' + str(client.user.email) + '!' )
     running = True
     while(running):
